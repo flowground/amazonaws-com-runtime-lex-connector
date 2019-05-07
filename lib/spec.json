@@ -1,0 +1,1586 @@
+{
+    "openapi": "3.0.0",
+    "servers": [
+        {
+            "url": "https://runtime.lex.amazonaws.com/"
+        },
+        {
+            "url": "http://runtime.lex.amazonaws.com/"
+        }
+    ],
+    "info": {
+        "contact": {
+            "email": "mike.ralphson@gmail.com",
+            "name": "Mike Ralphson",
+            "url": "https://github.com/mermade/aws2openapi",
+            "x-twitter": "PermittedSoc"
+        },
+        "description": "Amazon Lex provides both build and runtime endpoints. Each endpoint provides a set of operations (API). Your conversational bot uses the runtime API to understand user utterances (user input text or voice). For example, suppose a user says \"I want pizza\", your bot sends this input to Amazon Lex using the runtime API. Amazon Lex recognizes that the user request is for the OrderPizza intent (one of the intents defined in the bot). Then Amazon Lex engages in user conversation on behalf of the bot to elicit required information (slot values, such as pizza size and crust type), and then performs fulfillment activity (that you configured when you created the bot). You use the build-time API to create and manage your Amazon Lex bot. For a list of build-time operations, see the build-time API, . ",
+        "license": {
+            "name": "Apache 2.0 License",
+            "url": "http://www.apache.org/licenses/"
+        },
+        "termsOfService": "https://aws.amazon.com/service-terms/",
+        "title": "Amazon Lex Runtime Service",
+        "version": "2016-11-28",
+        "x-apiClientRegistration": {
+            "url": "https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct"
+        },
+        "x-apisguru-categories": [
+            "cloud"
+        ],
+        "x-logo": {
+            "backgroundColor": "#FFFFFF",
+            "url": "https://api.apis.guru/v2/cache/logo/https_twitter.com_awscloud_profile_image.jpeg"
+        },
+        "x-origin": [
+            {
+                "contentType": "application/json",
+                "converter": {
+                    "url": "https://github.com/mermade/aws2openapi",
+                    "version": "1.0.0"
+                },
+                "url": "https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/runtime.lex-2016-11-28.normal.json",
+                "x-apisguru-direct": true
+            }
+        ],
+        "x-preferred": true,
+        "x-providerName": "amazonaws.com",
+        "x-release": "v4",
+        "x-serviceName": "runtime.lex"
+    },
+    "externalDocs": {
+        "description": "Amazon Web Services documentation",
+        "url": "https://docs.aws.amazon.com/lex/"
+    },
+    "security": [
+        {
+            "hmac": []
+        }
+    ],
+    "paths": {
+        "/bot/{botName}/alias/{botAlias}/user/{userId}/content": {
+            "parameters": [
+                {
+                    "in": "query",
+                    "name": "Action",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "in": "query",
+                    "name": "Version",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "in": "header",
+                    "name": "X-Amz-Content-Sha256",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "in": "header",
+                    "name": "X-Amz-Date",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "in": "header",
+                    "name": "X-Amz-Algorithm",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "in": "header",
+                    "name": "X-Amz-Credential",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "in": "header",
+                    "name": "X-Amz-Security-Token",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "in": "header",
+                    "name": "X-Amz-Signature",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "in": "header",
+                    "name": "X-Amz-SignedHeaders",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            ],
+            "post": {
+                "description": "<p> Sends user input (text or speech) to Amazon Lex. Clients use this API to send text and audio requests to Amazon Lex at runtime. Amazon Lex interprets the user input using the machine learning model that it built for the bot. </p> <p>The <code>PostContent</code> operation supports audio input at 8kHz and 16kHz. You can use 8kHz audio to achieve higher speech recognition accuracy in telephone audio applications. </p> <p> In response, Amazon Lex returns the next message to convey to the user. Consider the following example messages: </p> <ul> <li> <p> For a user input \"I would like a pizza,\" Amazon Lex might return a response with a message eliciting slot data (for example, <code>PizzaSize</code>): \"What size pizza would you like?\". </p> </li> <li> <p> After the user provides all of the pizza order information, Amazon Lex might return a response with a message to get user confirmation: \"Order the pizza?\". </p> </li> <li> <p> After the user replies \"Yes\" to the confirmation prompt, Amazon Lex might return a conclusion statement: \"Thank you, your cheese pizza has been ordered.\". </p> </li> </ul> <p> Not all Amazon Lex messages require a response from the user. For example, conclusion statements do not require a response. Some messages require only a yes or no response. In addition to the <code>message</code>, Amazon Lex provides additional context about the message in the response that you can use to enhance client behavior, such as displaying the appropriate client user interface. Consider the following examples: </p> <ul> <li> <p> If the message is to elicit slot data, Amazon Lex returns the following context information: </p> <ul> <li> <p> <code>x-amz-lex-dialog-state</code> header set to <code>ElicitSlot</code> </p> </li> <li> <p> <code>x-amz-lex-intent-name</code> header set to the intent name in the current context </p> </li> <li> <p> <code>x-amz-lex-slot-to-elicit</code> header set to the slot name for which the <code>message</code> is eliciting information </p> </li> <li> <p> <code>x-amz-lex-slots</code> header set to a map of slots configured for the intent with their current values </p> </li> </ul> </li> <li> <p> If the message is a confirmation prompt, the <code>x-amz-lex-dialog-state</code> header is set to <code>Confirmation</code> and the <code>x-amz-lex-slot-to-elicit</code> header is omitted. </p> </li> <li> <p> If the message is a clarification prompt configured for the intent, indicating that the user intent is not understood, the <code>x-amz-dialog-state</code> header is set to <code>ElicitIntent</code> and the <code>x-amz-slot-to-elicit</code> header is omitted. </p> </li> </ul> <p> In addition, Amazon Lex also returns your application-specific <code>sessionAttributes</code>. For more information, see <a href=\"http://docs.aws.amazon.com/lex/latest/dg/context-mgmt.html\">Managing Conversation Context</a>. </p>",
+                "operationId": "PostContent",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "botName",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "botAlias",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "userId",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "audioStream": {
+                                            "description": "The prompt (or statement) to convey to the user. This is based on the bot configuration and context. For example, if Amazon Lex did not understand the user intent, it sends the <code>clarificationPrompt</code> configured for the bot. If the intent requires confirmation before taking the fulfillment action, it sends the <code>confirmationPrompt</code>. Another example: Suppose that the Lambda function successfully fulfilled the intent, and sent a message to convey to the user. Then Amazon Lex sends that message in the response. ",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "480": {
+                        "description": "NotFoundException",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "The resource (such as the Amazon Lex bot or an alias) that is referred to is not found.",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "481": {
+                        "description": "BadRequestException",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": " Request validation failed, there is no usable message in the context, or the bot build failed, is still in progress, or contains unbuilt changes. ",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "482": {
+                        "description": "LimitExceededException",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Exceeded a limit.",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "483": {
+                        "description": "InternalFailureException",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Internal service error. Retry the call.",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "484": {
+                        "description": "ConflictException",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": " Two clients are using the same AWS account, Amazon Lex bot, and user ID. ",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "485": {
+                        "description": "UnsupportedMediaTypeException",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "The Content-Type header (<code>PostContent</code> API) has an invalid value. ",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "486": {
+                        "description": "NotAcceptableException",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "The accept header in the request does not have a valid value.",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "487": {
+                        "description": "RequestTimeoutException",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "The input speech is too long.",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "488": {
+                        "description": "DependencyFailedException",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "<p> One of the dependencies, such as AWS Lambda or Amazon Polly, threw an exception. For example, </p> <ul> <li> <p>If Amazon Lex does not have sufficient permissions to call a Lambda function.</p> </li> <li> <p>If a Lambda function takes longer than 30 seconds to execute.</p> </li> <li> <p>If a fulfillment Lambda function returns a <code>Delegate</code> dialog action without removing any slot values.</p> </li> </ul>",
+                                    "properties": {
+                                        "Message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "489": {
+                        "description": "BadGatewayException",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Either the Amazon Lex bot is still building, or one of the dependent services (Amazon Polly, AWS Lambda) failed with an internal service error.",
+                                    "properties": {
+                                        "Message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "490": {
+                        "description": "LoopDetectedException",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "This exception is not used.",
+                                    "properties": {
+                                        "Message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "inputStream": {
+                                        "description": "<p> User input in PCM or Opus audio format or text format as described in the <code>Content-Type</code> HTTP header. </p> <p>You can stream audio data to Amazon Lex or you can create a local buffer that captures all of the audio data before sending. In general, you get better performance if you stream audio data rather than buffering the data locally.</p>",
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "inputStream"
+                                ],
+                                "type": "object"
+                            }
+                        }
+                    },
+                    "required": true
+                }
+            }
+        },
+        "/bot/{botName}/alias/{botAlias}/user/{userId}/text": {
+            "parameters": [
+                {
+                    "in": "query",
+                    "name": "Action",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "in": "query",
+                    "name": "Version",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "in": "header",
+                    "name": "X-Amz-Content-Sha256",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "in": "header",
+                    "name": "X-Amz-Date",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "in": "header",
+                    "name": "X-Amz-Algorithm",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "in": "header",
+                    "name": "X-Amz-Credential",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "in": "header",
+                    "name": "X-Amz-Security-Token",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "in": "header",
+                    "name": "X-Amz-Signature",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "in": "header",
+                    "name": "X-Amz-SignedHeaders",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            ],
+            "post": {
+                "description": "<p>Sends user input (text-only) to Amazon Lex. Client applications can use this API to send requests to Amazon Lex at runtime. Amazon Lex then interprets the user input using the machine learning model it built for the bot. </p> <p> In response, Amazon Lex returns the next <code>message</code> to convey to the user an optional <code>responseCard</code> to display. Consider the following example messages: </p> <ul> <li> <p> For a user input \"I would like a pizza\", Amazon Lex might return a response with a message eliciting slot data (for example, PizzaSize): \"What size pizza would you like?\" </p> </li> <li> <p> After the user provides all of the pizza order information, Amazon Lex might return a response with a message to obtain user confirmation \"Proceed with the pizza order?\". </p> </li> <li> <p> After the user replies to a confirmation prompt with a \"yes\", Amazon Lex might return a conclusion statement: \"Thank you, your cheese pizza has been ordered.\". </p> </li> </ul> <p> Not all Amazon Lex messages require a user response. For example, a conclusion statement does not require a response. Some messages require only a \"yes\" or \"no\" user response. In addition to the <code>message</code>, Amazon Lex provides additional context about the message in the response that you might use to enhance client behavior, for example, to display the appropriate client user interface. These are the <code>slotToElicit</code>, <code>dialogState</code>, <code>intentName</code>, and <code>slots</code> fields in the response. Consider the following examples: </p> <ul> <li> <p>If the message is to elicit slot data, Amazon Lex returns the following context information:</p> <ul> <li> <p> <code>dialogState</code> set to ElicitSlot </p> </li> <li> <p> <code>intentName</code> set to the intent name in the current context </p> </li> <li> <p> <code>slotToElicit</code> set to the slot name for which the <code>message</code> is eliciting information </p> </li> <li> <p> <code>slots</code> set to a map of slots, configured for the intent, with currently known values </p> </li> </ul> </li> <li> <p> If the message is a confirmation prompt, the <code>dialogState</code> is set to ConfirmIntent and <code>SlotToElicit</code> is set to null. </p> </li> <li> <p>If the message is a clarification prompt (configured for the intent) that indicates that user intent is not understood, the <code>dialogState</code> is set to ElicitIntent and <code>slotToElicit</code> is set to null. </p> </li> </ul> <p> In addition, Amazon Lex also returns your application-specific <code>sessionAttributes</code>. For more information, see <a href=\"http://docs.aws.amazon.com/lex/latest/dg/context-mgmt.html\">Managing Conversation Context</a>. </p>",
+                "operationId": "PostText",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "botName",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "botAlias",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "userId",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "dialogState": {
+                                            "description": "<p> Identifies the current state of the user interaction. Amazon Lex returns one of the following values as <code>dialogState</code>. The client can optionally use this information to customize the user interface. </p> <ul> <li> <p> <code>ElicitIntent</code> - Amazon Lex wants to elicit user intent. </p> <p>For example, a user might utter an intent (\"I want to order a pizza\"). If Amazon Lex cannot infer the user intent from this utterance, it will return this dialogState.</p> </li> <li> <p> <code>ConfirmIntent</code> - Amazon Lex is expecting a \"yes\" or \"no\" response. </p> <p> For example, Amazon Lex wants user confirmation before fulfilling an intent. </p> <p>Instead of a simple \"yes\" or \"no,\" a user might respond with additional information. For example, \"yes, but make it thick crust pizza\" or \"no, I want to order a drink\". Amazon Lex can process such additional information (in these examples, update the crust type slot value, or change intent from OrderPizza to OrderDrink).</p> </li> <li> <p> <code>ElicitSlot</code> - Amazon Lex is expecting a slot value for the current intent. </p> <p>For example, suppose that in the response Amazon Lex sends this message: \"What size pizza would you like?\". A user might reply with the slot value (e.g., \"medium\"). The user might also provide additional information in the response (e.g., \"medium thick crust pizza\"). Amazon Lex can process such additional information appropriately. </p> </li> <li> <p> <code>Fulfilled</code> - Conveys that the Lambda function configured for the intent has successfully fulfilled the intent. </p> </li> <li> <p> <code>ReadyForFulfillment</code> - Conveys that the client has to fulfill the intent. </p> </li> <li> <p> <code>Failed</code> - Conveys that the conversation with the user failed. </p> <p> This can happen for various reasons including that the user did not provide an appropriate response to prompts from the service (you can configure how many times Amazon Lex can prompt a user for specific information), or the Lambda function failed to fulfill the intent. </p> </li> </ul>",
+                                            "enum": [
+                                                "ElicitIntent",
+                                                "ConfirmIntent",
+                                                "ElicitSlot",
+                                                "Fulfilled",
+                                                "ReadyForFulfillment",
+                                                "Failed"
+                                            ],
+                                            "type": "string"
+                                        },
+                                        "intentName": {
+                                            "description": "The current user intent that Amazon Lex is aware of.",
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "description": "<p>The message to convey to the user. The message can come from the bot's configuration or from a Lambda function.</p> <p>If the intent is not configured with a Lambda function, or if the Lambda function returned <code>Delegate</code> as the <code>dialogAction.type</code> its response, Amazon Lex decides on the next course of action and selects an appropriate message from the bot's configuration based on the current interaction context. For example, if Amazon Lex isn't able to understand user input, it uses a clarification prompt message.</p> <p>When you create an intent you can assign messages to groups. When messages are assigned to groups Amazon Lex returns one message from each group in the response. The message field is an escaped JSON string containing the messages. For more information about the structure of the JSON string returned, see <a>msg-prompts-formats</a>.</p> <p>If the Lambda function returns a message, Amazon Lex passes it to the client in its response.</p>",
+                                            "format": "password",
+                                            "maxLength": 1024,
+                                            "minLength": 1,
+                                            "type": "string"
+                                        },
+                                        "messageFormat": {
+                                            "description": "<p>The format of the response message. One of the following values:</p> <ul> <li> <p> <code>PlainText</code> - The message contains plain UTF-8 text.</p> </li> <li> <p> <code>CustomPayload</code> - The message is a custom format defined by the Lambda function.</p> </li> <li> <p> <code>SSML</code> - The message contains text formatted for voice output.</p> </li> <li> <p> <code>Composite</code> - The message contains an escaped JSON object containing one or more messages from the groups that messages were assigned to when the intent was created.</p> </li> </ul>",
+                                            "enum": [
+                                                "PlainText",
+                                                "CustomPayload",
+                                                "SSML",
+                                                "Composite"
+                                            ],
+                                            "type": "string"
+                                        },
+                                        "responseCard": {
+                                            "description": "Represents the options that the user has to respond to the current prompt. Response Card can come from the bot configuration (in the Amazon Lex console, choose the settings button next to a slot) or from a code hook (Lambda function). ",
+                                            "properties": {
+                                                "contentType": {
+                                                    "description": "The content type of the response.",
+                                                    "enum": [
+                                                        "application/vnd.amazonaws.card.generic"
+                                                    ],
+                                                    "type": "string"
+                                                },
+                                                "genericAttachments": {
+                                                    "description": "An array of attachment objects representing options.",
+                                                    "items": {
+                                                        "description": "Represents an option rendered to the user when a prompt is shown. It could be an image, a button, a link, or text. ",
+                                                        "properties": {
+                                                            "attachmentLinkUrl": {
+                                                                "description": "The URL of an attachment to the response card.",
+                                                                "maxLength": 2048,
+                                                                "minLength": 1,
+                                                                "type": "string"
+                                                            },
+                                                            "buttons": {
+                                                                "description": "The list of options to show to the user.",
+                                                                "items": {
+                                                                    "description": "Represents an option to be shown on the client platform (Facebook, Slack, etc.)",
+                                                                    "properties": {
+                                                                        "text": {
+                                                                            "description": "Text that is visible to the user on the button.",
+                                                                            "maxLength": 15,
+                                                                            "minLength": 1,
+                                                                            "type": "string"
+                                                                        },
+                                                                        "value": {
+                                                                            "description": "The value sent to Amazon Lex when a user chooses the button. For example, consider button text \"NYC.\" When the user chooses the button, the value sent can be \"New York City.\"",
+                                                                            "maxLength": 1000,
+                                                                            "minLength": 1,
+                                                                            "type": "string"
+                                                                        }
+                                                                    },
+                                                                    "required": [
+                                                                        "text",
+                                                                        "value"
+                                                                    ],
+                                                                    "type": "object"
+                                                                },
+                                                                "maxItems": 5,
+                                                                "minItems": 0,
+                                                                "type": "array"
+                                                            },
+                                                            "imageUrl": {
+                                                                "description": "The URL of an image that is displayed to the user.",
+                                                                "maxLength": 2048,
+                                                                "minLength": 1,
+                                                                "type": "string"
+                                                            },
+                                                            "subTitle": {
+                                                                "description": "The subtitle shown below the title.",
+                                                                "maxLength": 80,
+                                                                "minLength": 1,
+                                                                "type": "string"
+                                                            },
+                                                            "title": {
+                                                                "description": "The title of the option.",
+                                                                "maxLength": 80,
+                                                                "minLength": 1,
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "maxItems": 10,
+                                                    "minItems": 0,
+                                                    "type": "array"
+                                                },
+                                                "version": {
+                                                    "description": "The version of the response card format.",
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "sessionAttributes": {
+                                            "description": "A map of key-value pairs representing the session-specific context information.",
+                                            "items": {
+                                                "properties": {
+                                                    "key": {
+                                                        "type": "string"
+                                                    },
+                                                    "value": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "type": "array"
+                                        },
+                                        "slotToElicit": {
+                                            "description": "If the <code>dialogState</code> value is <code>ElicitSlot</code>, returns the name of the slot for which Amazon Lex is eliciting a value. ",
+                                            "type": "string"
+                                        },
+                                        "slots": {
+                                            "description": "<p> The intent slots that Amazon Lex detected from the user input in the conversation. </p> <p>Amazon Lex creates a resolution list containing likely values for a slot. The value that it returns is determined by the <code>valueSelectionStrategy</code> selected when the slot type was created or updated. If <code>valueSelectionStrategy</code> is set to <code>ORIGINAL_VALUE</code>, the value provided by the user is returned, if the user value is similar to the slot values. If <code>valueSelectionStrategy</code> is set to <code>TOP_RESOLUTION</code> Amazon Lex returns the first value in the resolution list or, if there is no resolution list, null. If you don't specify a <code>valueSelectionStrategy</code>, the default is <code>ORIGINAL_VALUE</code>.</p>",
+                                            "items": {
+                                                "properties": {
+                                                    "key": {
+                                                        "type": "string"
+                                                    },
+                                                    "value": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "type": "array"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "480": {
+                        "description": "NotFoundException",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "The resource (such as the Amazon Lex bot or an alias) that is referred to is not found.",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "481": {
+                        "description": "BadRequestException",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": " Request validation failed, there is no usable message in the context, or the bot build failed, is still in progress, or contains unbuilt changes. ",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "482": {
+                        "description": "LimitExceededException",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Exceeded a limit.",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "483": {
+                        "description": "InternalFailureException",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Internal service error. Retry the call.",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "484": {
+                        "description": "ConflictException",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": " Two clients are using the same AWS account, Amazon Lex bot, and user ID. ",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "485": {
+                        "description": "DependencyFailedException",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "<p> One of the dependencies, such as AWS Lambda or Amazon Polly, threw an exception. For example, </p> <ul> <li> <p>If Amazon Lex does not have sufficient permissions to call a Lambda function.</p> </li> <li> <p>If a Lambda function takes longer than 30 seconds to execute.</p> </li> <li> <p>If a fulfillment Lambda function returns a <code>Delegate</code> dialog action without removing any slot values.</p> </li> </ul>",
+                                    "properties": {
+                                        "Message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "486": {
+                        "description": "BadGatewayException",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Either the Amazon Lex bot is still building, or one of the dependent services (Amazon Polly, AWS Lambda) failed with an internal service error.",
+                                    "properties": {
+                                        "Message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "487": {
+                        "description": "LoopDetectedException",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "This exception is not used.",
+                                    "properties": {
+                                        "Message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "inputText": {
+                                        "description": "The text that the user entered (Amazon Lex interprets this text).",
+                                        "format": "password",
+                                        "maxLength": 1024,
+                                        "minLength": 1,
+                                        "type": "string"
+                                    },
+                                    "requestAttributes": {
+                                        "description": "<p>Request-specific information passed between Amazon Lex and a client application.</p> <p>The namespace <code>x-amz-lex:</code> is reserved for special attributes. Don't create any request attributes with the prefix <code>x-amz-lex:</code>.</p> <p>For more information, see <a href=\"http://docs.aws.amazon.com/lex/latest/dg/context-mgmt.html#context-mgmt-request-attribs\">Setting Request Attributes</a>.</p>",
+                                        "items": {
+                                            "properties": {
+                                                "key": {
+                                                    "type": "string"
+                                                },
+                                                "value": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "type": "array"
+                                    },
+                                    "sessionAttributes": {
+                                        "description": "<p>Application-specific information passed between Amazon Lex and a client application.</p> <p>For more information, see <a href=\"http://docs.aws.amazon.com/lex/latest/dg/context-mgmt.html#context-mgmt-session-attribs\">Setting Session Attributes</a>.</p>",
+                                        "items": {
+                                            "properties": {
+                                                "key": {
+                                                    "type": "string"
+                                                },
+                                                "value": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "type": "array"
+                                    }
+                                },
+                                "required": [
+                                    "inputText"
+                                ],
+                                "type": "object"
+                            }
+                        }
+                    },
+                    "required": true
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Accept": {
+                "type": "string"
+            },
+            "AttributesString": {
+                "format": "password",
+                "type": "string"
+            },
+            "BadGatewayException": {
+                "description": "Either the Amazon Lex bot is still building, or one of the dependent services (Amazon Polly, AWS Lambda) failed with an internal service error.",
+                "properties": {
+                    "Message": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "BadRequestException": {
+                "description": " Request validation failed, there is no usable message in the context, or the bot build failed, is still in progress, or contains unbuilt changes. ",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "BlobStream": {
+                "type": "string"
+            },
+            "BotAlias": {
+                "type": "string"
+            },
+            "BotName": {
+                "type": "string"
+            },
+            "Button": {
+                "description": "Represents an option to be shown on the client platform (Facebook, Slack, etc.)",
+                "properties": {
+                    "text": {
+                        "description": "Text that is visible to the user on the button.",
+                        "maxLength": 15,
+                        "minLength": 1,
+                        "type": "string"
+                    },
+                    "value": {
+                        "description": "The value sent to Amazon Lex when a user chooses the button. For example, consider button text \"NYC.\" When the user chooses the button, the value sent can be \"New York City.\"",
+                        "maxLength": 1000,
+                        "minLength": 1,
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "text",
+                    "value"
+                ],
+                "type": "object"
+            },
+            "ButtonTextStringWithLength": {
+                "maxLength": 15,
+                "minLength": 1,
+                "type": "string"
+            },
+            "ButtonValueStringWithLength": {
+                "maxLength": 1000,
+                "minLength": 1,
+                "type": "string"
+            },
+            "ConflictException": {
+                "description": " Two clients are using the same AWS account, Amazon Lex bot, and user ID. ",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "ContentType": {
+                "enum": [
+                    "application/vnd.amazonaws.card.generic"
+                ],
+                "type": "string"
+            },
+            "DependencyFailedException": {
+                "description": "<p> One of the dependencies, such as AWS Lambda or Amazon Polly, threw an exception. For example, </p> <ul> <li> <p>If Amazon Lex does not have sufficient permissions to call a Lambda function.</p> </li> <li> <p>If a Lambda function takes longer than 30 seconds to execute.</p> </li> <li> <p>If a fulfillment Lambda function returns a <code>Delegate</code> dialog action without removing any slot values.</p> </li> </ul>",
+                "properties": {
+                    "Message": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "DialogState": {
+                "enum": [
+                    "ElicitIntent",
+                    "ConfirmIntent",
+                    "ElicitSlot",
+                    "Fulfilled",
+                    "ReadyForFulfillment",
+                    "Failed"
+                ],
+                "type": "string"
+            },
+            "ErrorMessage": {
+                "type": "string"
+            },
+            "GenericAttachment": {
+                "description": "Represents an option rendered to the user when a prompt is shown. It could be an image, a button, a link, or text. ",
+                "properties": {
+                    "attachmentLinkUrl": {
+                        "description": "The URL of an attachment to the response card.",
+                        "maxLength": 2048,
+                        "minLength": 1,
+                        "type": "string"
+                    },
+                    "buttons": {
+                        "description": "The list of options to show to the user.",
+                        "items": {
+                            "description": "Represents an option to be shown on the client platform (Facebook, Slack, etc.)",
+                            "properties": {
+                                "text": {
+                                    "description": "Text that is visible to the user on the button.",
+                                    "maxLength": 15,
+                                    "minLength": 1,
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "description": "The value sent to Amazon Lex when a user chooses the button. For example, consider button text \"NYC.\" When the user chooses the button, the value sent can be \"New York City.\"",
+                                    "maxLength": 1000,
+                                    "minLength": 1,
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "text",
+                                "value"
+                            ],
+                            "type": "object"
+                        },
+                        "maxItems": 5,
+                        "minItems": 0,
+                        "type": "array"
+                    },
+                    "imageUrl": {
+                        "description": "The URL of an image that is displayed to the user.",
+                        "maxLength": 2048,
+                        "minLength": 1,
+                        "type": "string"
+                    },
+                    "subTitle": {
+                        "description": "The subtitle shown below the title.",
+                        "maxLength": 80,
+                        "minLength": 1,
+                        "type": "string"
+                    },
+                    "title": {
+                        "description": "The title of the option.",
+                        "maxLength": 80,
+                        "minLength": 1,
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "HttpContentType": {
+                "type": "string"
+            },
+            "IntentName": {
+                "type": "string"
+            },
+            "InternalFailureException": {
+                "description": "Internal service error. Retry the call.",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "LimitExceededException": {
+                "description": "Exceeded a limit.",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "LoopDetectedException": {
+                "description": "This exception is not used.",
+                "properties": {
+                    "Message": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "MessageFormatType": {
+                "enum": [
+                    "PlainText",
+                    "CustomPayload",
+                    "SSML",
+                    "Composite"
+                ],
+                "type": "string"
+            },
+            "NotAcceptableException": {
+                "description": "The accept header in the request does not have a valid value.",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "NotFoundException": {
+                "description": "The resource (such as the Amazon Lex bot or an alias) that is referred to is not found.",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "PostContentRequest": {
+                "properties": {
+                    "inputStream": {
+                        "description": "<p> User input in PCM or Opus audio format or text format as described in the <code>Content-Type</code> HTTP header. </p> <p>You can stream audio data to Amazon Lex or you can create a local buffer that captures all of the audio data before sending. In general, you get better performance if you stream audio data rather than buffering the data locally.</p>",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "inputStream"
+                ],
+                "type": "object"
+            },
+            "PostContentResponse": {
+                "properties": {
+                    "audioStream": {
+                        "description": "The prompt (or statement) to convey to the user. This is based on the bot configuration and context. For example, if Amazon Lex did not understand the user intent, it sends the <code>clarificationPrompt</code> configured for the bot. If the intent requires confirmation before taking the fulfillment action, it sends the <code>confirmationPrompt</code>. Another example: Suppose that the Lambda function successfully fulfilled the intent, and sent a message to convey to the user. Then Amazon Lex sends that message in the response. ",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "PostTextRequest": {
+                "properties": {
+                    "inputText": {
+                        "description": "The text that the user entered (Amazon Lex interprets this text).",
+                        "format": "password",
+                        "maxLength": 1024,
+                        "minLength": 1,
+                        "type": "string"
+                    },
+                    "requestAttributes": {
+                        "description": "<p>Request-specific information passed between Amazon Lex and a client application.</p> <p>The namespace <code>x-amz-lex:</code> is reserved for special attributes. Don't create any request attributes with the prefix <code>x-amz-lex:</code>.</p> <p>For more information, see <a href=\"http://docs.aws.amazon.com/lex/latest/dg/context-mgmt.html#context-mgmt-request-attribs\">Setting Request Attributes</a>.</p>",
+                        "items": {
+                            "properties": {
+                                "key": {
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "type": "array"
+                    },
+                    "sessionAttributes": {
+                        "description": "<p>Application-specific information passed between Amazon Lex and a client application.</p> <p>For more information, see <a href=\"http://docs.aws.amazon.com/lex/latest/dg/context-mgmt.html#context-mgmt-session-attribs\">Setting Session Attributes</a>.</p>",
+                        "items": {
+                            "properties": {
+                                "key": {
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "type": "array"
+                    }
+                },
+                "required": [
+                    "inputText"
+                ],
+                "type": "object"
+            },
+            "PostTextResponse": {
+                "properties": {
+                    "dialogState": {
+                        "description": "<p> Identifies the current state of the user interaction. Amazon Lex returns one of the following values as <code>dialogState</code>. The client can optionally use this information to customize the user interface. </p> <ul> <li> <p> <code>ElicitIntent</code> - Amazon Lex wants to elicit user intent. </p> <p>For example, a user might utter an intent (\"I want to order a pizza\"). If Amazon Lex cannot infer the user intent from this utterance, it will return this dialogState.</p> </li> <li> <p> <code>ConfirmIntent</code> - Amazon Lex is expecting a \"yes\" or \"no\" response. </p> <p> For example, Amazon Lex wants user confirmation before fulfilling an intent. </p> <p>Instead of a simple \"yes\" or \"no,\" a user might respond with additional information. For example, \"yes, but make it thick crust pizza\" or \"no, I want to order a drink\". Amazon Lex can process such additional information (in these examples, update the crust type slot value, or change intent from OrderPizza to OrderDrink).</p> </li> <li> <p> <code>ElicitSlot</code> - Amazon Lex is expecting a slot value for the current intent. </p> <p>For example, suppose that in the response Amazon Lex sends this message: \"What size pizza would you like?\". A user might reply with the slot value (e.g., \"medium\"). The user might also provide additional information in the response (e.g., \"medium thick crust pizza\"). Amazon Lex can process such additional information appropriately. </p> </li> <li> <p> <code>Fulfilled</code> - Conveys that the Lambda function configured for the intent has successfully fulfilled the intent. </p> </li> <li> <p> <code>ReadyForFulfillment</code> - Conveys that the client has to fulfill the intent. </p> </li> <li> <p> <code>Failed</code> - Conveys that the conversation with the user failed. </p> <p> This can happen for various reasons including that the user did not provide an appropriate response to prompts from the service (you can configure how many times Amazon Lex can prompt a user for specific information), or the Lambda function failed to fulfill the intent. </p> </li> </ul>",
+                        "enum": [
+                            "ElicitIntent",
+                            "ConfirmIntent",
+                            "ElicitSlot",
+                            "Fulfilled",
+                            "ReadyForFulfillment",
+                            "Failed"
+                        ],
+                        "type": "string"
+                    },
+                    "intentName": {
+                        "description": "The current user intent that Amazon Lex is aware of.",
+                        "type": "string"
+                    },
+                    "message": {
+                        "description": "<p>The message to convey to the user. The message can come from the bot's configuration or from a Lambda function.</p> <p>If the intent is not configured with a Lambda function, or if the Lambda function returned <code>Delegate</code> as the <code>dialogAction.type</code> its response, Amazon Lex decides on the next course of action and selects an appropriate message from the bot's configuration based on the current interaction context. For example, if Amazon Lex isn't able to understand user input, it uses a clarification prompt message.</p> <p>When you create an intent you can assign messages to groups. When messages are assigned to groups Amazon Lex returns one message from each group in the response. The message field is an escaped JSON string containing the messages. For more information about the structure of the JSON string returned, see <a>msg-prompts-formats</a>.</p> <p>If the Lambda function returns a message, Amazon Lex passes it to the client in its response.</p>",
+                        "format": "password",
+                        "maxLength": 1024,
+                        "minLength": 1,
+                        "type": "string"
+                    },
+                    "messageFormat": {
+                        "description": "<p>The format of the response message. One of the following values:</p> <ul> <li> <p> <code>PlainText</code> - The message contains plain UTF-8 text.</p> </li> <li> <p> <code>CustomPayload</code> - The message is a custom format defined by the Lambda function.</p> </li> <li> <p> <code>SSML</code> - The message contains text formatted for voice output.</p> </li> <li> <p> <code>Composite</code> - The message contains an escaped JSON object containing one or more messages from the groups that messages were assigned to when the intent was created.</p> </li> </ul>",
+                        "enum": [
+                            "PlainText",
+                            "CustomPayload",
+                            "SSML",
+                            "Composite"
+                        ],
+                        "type": "string"
+                    },
+                    "responseCard": {
+                        "description": "Represents the options that the user has to respond to the current prompt. Response Card can come from the bot configuration (in the Amazon Lex console, choose the settings button next to a slot) or from a code hook (Lambda function). ",
+                        "properties": {
+                            "contentType": {
+                                "description": "The content type of the response.",
+                                "enum": [
+                                    "application/vnd.amazonaws.card.generic"
+                                ],
+                                "type": "string"
+                            },
+                            "genericAttachments": {
+                                "description": "An array of attachment objects representing options.",
+                                "items": {
+                                    "description": "Represents an option rendered to the user when a prompt is shown. It could be an image, a button, a link, or text. ",
+                                    "properties": {
+                                        "attachmentLinkUrl": {
+                                            "description": "The URL of an attachment to the response card.",
+                                            "maxLength": 2048,
+                                            "minLength": 1,
+                                            "type": "string"
+                                        },
+                                        "buttons": {
+                                            "description": "The list of options to show to the user.",
+                                            "items": {
+                                                "description": "Represents an option to be shown on the client platform (Facebook, Slack, etc.)",
+                                                "properties": {
+                                                    "text": {
+                                                        "description": "Text that is visible to the user on the button.",
+                                                        "maxLength": 15,
+                                                        "minLength": 1,
+                                                        "type": "string"
+                                                    },
+                                                    "value": {
+                                                        "description": "The value sent to Amazon Lex when a user chooses the button. For example, consider button text \"NYC.\" When the user chooses the button, the value sent can be \"New York City.\"",
+                                                        "maxLength": 1000,
+                                                        "minLength": 1,
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "text",
+                                                    "value"
+                                                ],
+                                                "type": "object"
+                                            },
+                                            "maxItems": 5,
+                                            "minItems": 0,
+                                            "type": "array"
+                                        },
+                                        "imageUrl": {
+                                            "description": "The URL of an image that is displayed to the user.",
+                                            "maxLength": 2048,
+                                            "minLength": 1,
+                                            "type": "string"
+                                        },
+                                        "subTitle": {
+                                            "description": "The subtitle shown below the title.",
+                                            "maxLength": 80,
+                                            "minLength": 1,
+                                            "type": "string"
+                                        },
+                                        "title": {
+                                            "description": "The title of the option.",
+                                            "maxLength": 80,
+                                            "minLength": 1,
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "maxItems": 10,
+                                "minItems": 0,
+                                "type": "array"
+                            },
+                            "version": {
+                                "description": "The version of the response card format.",
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "sessionAttributes": {
+                        "description": "A map of key-value pairs representing the session-specific context information.",
+                        "items": {
+                            "properties": {
+                                "key": {
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "type": "array"
+                    },
+                    "slotToElicit": {
+                        "description": "If the <code>dialogState</code> value is <code>ElicitSlot</code>, returns the name of the slot for which Amazon Lex is eliciting a value. ",
+                        "type": "string"
+                    },
+                    "slots": {
+                        "description": "<p> The intent slots that Amazon Lex detected from the user input in the conversation. </p> <p>Amazon Lex creates a resolution list containing likely values for a slot. The value that it returns is determined by the <code>valueSelectionStrategy</code> selected when the slot type was created or updated. If <code>valueSelectionStrategy</code> is set to <code>ORIGINAL_VALUE</code>, the value provided by the user is returned, if the user value is similar to the slot values. If <code>valueSelectionStrategy</code> is set to <code>TOP_RESOLUTION</code> Amazon Lex returns the first value in the resolution list or, if there is no resolution list, null. If you don't specify a <code>valueSelectionStrategy</code>, the default is <code>ORIGINAL_VALUE</code>.</p>",
+                        "items": {
+                            "properties": {
+                                "key": {
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "type": "array"
+                    }
+                },
+                "type": "object"
+            },
+            "RequestTimeoutException": {
+                "description": "The input speech is too long.",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "ResponseCard": {
+                "description": "If you configure a response card when creating your bots, Amazon Lex substitutes the session attributes and slot values that are available, and then returns it. The response card can also come from a Lambda function ( <code>dialogCodeHook</code> and <code>fulfillmentActivity</code> on an intent).",
+                "properties": {
+                    "contentType": {
+                        "description": "The content type of the response.",
+                        "enum": [
+                            "application/vnd.amazonaws.card.generic"
+                        ],
+                        "type": "string"
+                    },
+                    "genericAttachments": {
+                        "description": "An array of attachment objects representing options.",
+                        "items": {
+                            "description": "Represents an option rendered to the user when a prompt is shown. It could be an image, a button, a link, or text. ",
+                            "properties": {
+                                "attachmentLinkUrl": {
+                                    "description": "The URL of an attachment to the response card.",
+                                    "maxLength": 2048,
+                                    "minLength": 1,
+                                    "type": "string"
+                                },
+                                "buttons": {
+                                    "description": "The list of options to show to the user.",
+                                    "items": {
+                                        "description": "Represents an option to be shown on the client platform (Facebook, Slack, etc.)",
+                                        "properties": {
+                                            "text": {
+                                                "description": "Text that is visible to the user on the button.",
+                                                "maxLength": 15,
+                                                "minLength": 1,
+                                                "type": "string"
+                                            },
+                                            "value": {
+                                                "description": "The value sent to Amazon Lex when a user chooses the button. For example, consider button text \"NYC.\" When the user chooses the button, the value sent can be \"New York City.\"",
+                                                "maxLength": 1000,
+                                                "minLength": 1,
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "text",
+                                            "value"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    "maxItems": 5,
+                                    "minItems": 0,
+                                    "type": "array"
+                                },
+                                "imageUrl": {
+                                    "description": "The URL of an image that is displayed to the user.",
+                                    "maxLength": 2048,
+                                    "minLength": 1,
+                                    "type": "string"
+                                },
+                                "subTitle": {
+                                    "description": "The subtitle shown below the title.",
+                                    "maxLength": 80,
+                                    "minLength": 1,
+                                    "type": "string"
+                                },
+                                "title": {
+                                    "description": "The title of the option.",
+                                    "maxLength": 80,
+                                    "minLength": 1,
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "maxItems": 10,
+                        "minItems": 0,
+                        "type": "array"
+                    },
+                    "version": {
+                        "description": "The version of the response card format.",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "String": {
+                "type": "string"
+            },
+            "StringMap": {
+                "items": {
+                    "properties": {
+                        "key": {
+                            "type": "string"
+                        },
+                        "value": {
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                },
+                "type": "array"
+            },
+            "StringUrlWithLength": {
+                "maxLength": 2048,
+                "minLength": 1,
+                "type": "string"
+            },
+            "StringWithLength": {
+                "maxLength": 80,
+                "minLength": 1,
+                "type": "string"
+            },
+            "Text": {
+                "format": "password",
+                "maxLength": 1024,
+                "minLength": 1,
+                "type": "string"
+            },
+            "UnsupportedMediaTypeException": {
+                "description": "The Content-Type header (<code>PostContent</code> API) has an invalid value. ",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UserId": {
+                "maxLength": 100,
+                "minLength": 2,
+                "pattern": "[0-9a-zA-Z._:-]+",
+                "type": "string"
+            },
+            "genericAttachmentList": {
+                "items": {
+                    "description": "Represents an option rendered to the user when a prompt is shown. It could be an image, a button, a link, or text. ",
+                    "properties": {
+                        "attachmentLinkUrl": {
+                            "description": "The URL of an attachment to the response card.",
+                            "maxLength": 2048,
+                            "minLength": 1,
+                            "type": "string"
+                        },
+                        "buttons": {
+                            "description": "The list of options to show to the user.",
+                            "items": {
+                                "description": "Represents an option to be shown on the client platform (Facebook, Slack, etc.)",
+                                "properties": {
+                                    "text": {
+                                        "description": "Text that is visible to the user on the button.",
+                                        "maxLength": 15,
+                                        "minLength": 1,
+                                        "type": "string"
+                                    },
+                                    "value": {
+                                        "description": "The value sent to Amazon Lex when a user chooses the button. For example, consider button text \"NYC.\" When the user chooses the button, the value sent can be \"New York City.\"",
+                                        "maxLength": 1000,
+                                        "minLength": 1,
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "text",
+                                    "value"
+                                ],
+                                "type": "object"
+                            },
+                            "maxItems": 5,
+                            "minItems": 0,
+                            "type": "array"
+                        },
+                        "imageUrl": {
+                            "description": "The URL of an image that is displayed to the user.",
+                            "maxLength": 2048,
+                            "minLength": 1,
+                            "type": "string"
+                        },
+                        "subTitle": {
+                            "description": "The subtitle shown below the title.",
+                            "maxLength": 80,
+                            "minLength": 1,
+                            "type": "string"
+                        },
+                        "title": {
+                            "description": "The title of the option.",
+                            "maxLength": 80,
+                            "minLength": 1,
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                },
+                "maxItems": 10,
+                "minItems": 0,
+                "type": "array"
+            },
+            "listOfButtons": {
+                "items": {
+                    "description": "Represents an option to be shown on the client platform (Facebook, Slack, etc.)",
+                    "properties": {
+                        "text": {
+                            "description": "Text that is visible to the user on the button.",
+                            "maxLength": 15,
+                            "minLength": 1,
+                            "type": "string"
+                        },
+                        "value": {
+                            "description": "The value sent to Amazon Lex when a user chooses the button. For example, consider button text \"NYC.\" When the user chooses the button, the value sent can be \"New York City.\"",
+                            "maxLength": 1000,
+                            "minLength": 1,
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "text",
+                        "value"
+                    ],
+                    "type": "object"
+                },
+                "maxItems": 5,
+                "minItems": 0,
+                "type": "array"
+            }
+        },
+        "parameters": {
+            "Action": {
+                "in": "query",
+                "name": "Action",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "Version": {
+                "in": "query",
+                "name": "Version",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "X-Amz-Algorithm": {
+                "in": "header",
+                "name": "X-Amz-Algorithm",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "X-Amz-Content-Sha256": {
+                "in": "header",
+                "name": "X-Amz-Content-Sha256",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "X-Amz-Credential": {
+                "in": "header",
+                "name": "X-Amz-Credential",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "X-Amz-Date": {
+                "in": "header",
+                "name": "X-Amz-Date",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "X-Amz-Security-Token": {
+                "in": "header",
+                "name": "X-Amz-Security-Token",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "X-Amz-Signature": {
+                "in": "header",
+                "name": "X-Amz-Signature",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "X-Amz-SignedHeaders": {
+                "in": "header",
+                "name": "X-Amz-SignedHeaders",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            }
+        },
+        "securitySchemes": {
+            "hmac": {
+                "description": "Amazon Signature authorization v4",
+                "in": "header",
+                "name": "Authorization",
+                "type": "apiKey",
+                "x-amazon-apigateway-authtype": "awsSigv4"
+            }
+        }
+    }
+}
